@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-tapi
+  labels:
+    app: spin-msr
+    module: scheduler-tapi
+    env: dev
+    kustomize: scheduler-tapi
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 300
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: scheduler-tapi
+      env: dev
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: scheduler-tapi
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: Environment
+                    operator: In
+                    values:
+                      - dev
+      volumes:
+        - name: permission-matrix
+          persistentVolumeClaim:
+            claimName: s3-dev-permission-matrix
+        - name: sg-event-scripts
+          persistentVolumeClaim:
+            claimName: s3-dev-sg-event-scripts
+        - name: spin-rez
+          persistentVolumeClaim:
+            claimName: s3-spin-rez
+            readOnly: true
+      serviceAccountName: scheduler
+      containers:
+        - image: 301653940240.dkr.ecr.us-east-1.amazonaws.com/scheduler-jobs:develop-latest
+          name: scheduler-tapi
+          imagePullPolicy: Always
+          command: ['/usr/bin/sleep', '324235436234']
+          envFrom:
+            - secretRef:
+                name: aws-eventbus
+            - secretRef:
+                name: aws-dybamodb
+            - secretRef:
+                name: auth-config
+            - secretRef:
+                name: shotgrid
+            - configMapRef:
+                name: common-config
+            - configMapRef:
+                name: uvicorn-config
+            - configMapRef:
+                name: scheduler-config
+            - configMapRef:
+                name: rez-config
+          volumeMounts:
+            - name: permission-matrix
+              mountPath: /mount/permission-matrix
+            - name: sg-event-scripts
+              mountPath: /mount/sg-event-scripts
+            - name: spin-rez
+              mountPath: /mount/spin-rez

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: prod
+  name: configs-service
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # IP whitelist is defined in the dashboard declaration 
+    alb.ingress.kubernetes.io/group.name: alb-spinvfx-external
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: $CERT
+spec:
+  ingressClassName: alb
+  rules:
+    - host: configs-prod.dev.spinvfx.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: configs-service
+                port:
+                  number: 8000

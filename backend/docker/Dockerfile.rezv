@@ -1,0 +1,58 @@
+# This Dockerfile defines the image used by the "rezv microservice", which differs from the image used by all other services.
+
+FROM centos:7.9.2009
+
+RUN yum update -y && yum groupinstall -y "Development Tools" && yum install -y zlib-devel openssl-devel libffi-devel
+RUN mkdir -p /usr/local/python
+RUN curl -L https://www.python.org/ftp/python/3.7.8/Python-3.7.8.tgz --output /usr/local/python/Python-3.7.8.tgz
+RUN tar -vxf /usr/local/python/Python-3.7.8.tgz -C /usr/local/python
+
+WORKDIR /usr/local/python/Python-3.7.8/
+
+RUN ./configure && make && make install
+
+RUN mkdir -p /opt/rez/
+
+WORKDIR /opt/rez
+RUN curl -L https://github.com/AcademySoftwareFoundation/rez/archive/refs/tags/2.111.2.tar.gz --output /opt/rez/rez.tar.gz
+RUN tar -vxf rez.tar.gz -C .
+RUN python rez-2.111.2/install.py
+
+RUN pip3 install pipenv
+
+ARG PROJECT_DIR=/opt/spinvfx
+
+RUN mkdir -p ${PROJECT_DIR}
+ENV PROJECT_DIR ${PROJECT_DIR}
+
+WORKDIR ${PROJECT_DIR}
+
+COPY . "${PROJECT_DIR}"/
+
+RUN find src/ -name "*.pyc" -delete
+RUN find src/ -name "__pycache__" -delete
+
+RUN pipenv install --dev --deploy
+
+ARG BUILD_ID
+ARG BUILD_HASH
+ARG BUILD_DATE
+ARG BUILD_LINK
+ARG BUILD_IMAGE
+
+
+RUN /bin/rm -rf "${PROJECT_DIR}/.env" "${PROJECT_DIR}/docker/"
+
+RUN echo 'PYTHONPATH=src'           >>"${PROJECT_DIR}/.env" 
+RUN echo "BUILD_ID='$BUILD_ID'"     >>"${PROJECT_DIR}/.env" 
+RUN echo "BUILD_HASH='$BUILD_HASH'" >>"${PROJECT_DIR}/.env" 
+RUN echo "BUILD_DATE='$BUILD_DATE'" >>"${PROJECT_DIR}/.env" 
+RUN echo "BUILD_LINK='$BUILD_LINK'" >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_IMAGE="'$BUILD_IMAGE'"' >>"${PROJECT_DIR}/.env"
+
+ENV PYTHONPATH=src
+
+RUN pipenv run docs || exit 0
+
+RUN echo "export PATH=$PATH:/opt/rez/bin/rez/" >>~/.bashrc
+RUN echo "source /opt/rez/completion/complete.sh" >>~/.bashrc

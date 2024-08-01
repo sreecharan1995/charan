@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dependency-service
+  labels:
+    app: spin-msr
+    module: dependency-service
+    env: dev
+    kustomize: dependency-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: dependency-service
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: dependency-service
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev          
+      volumes:
+      - name: spin-rez
+        persistentVolumeClaim:
+          claimName: spin-rez
+      - name: permission-matrix
+        persistentVolumeClaim:
+          claimName: permission-matrix    
+      containers:
+      - image: image_name
+        name: dependency-service
+        imagePullPolicy: Always
+        command: ["pipenv", "run", "dependency-server"]
+        envFrom:
+          - configMapRef:
+              name: common-config
+          - configMapRef:
+              name: dependency-service-config
+          - configMapRef:
+              name: uvicorn-config
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: auth-config
+        ports:
+          - containerPort: 8000
+            name: http        
+        volumeMounts:
+          - name: spin-rez
+            mountPath: /mount/spin-rez
+          - name: permission-matrix
+            mountPath: /mount/permission-matrix
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: dependency-service
+    env: dev
+  name: dependency-service
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: dependency-service
+    env: dev
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+

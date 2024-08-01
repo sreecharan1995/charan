@@ -1,0 +1,14 @@
+bases:
+- ../../base/uat
+resources:
+- ../base
+namespace: uat
+configMapGenerator:
+- name: dependency-service-config
+  envs:  
+  - config/dependency-config.env
+- name: uvicorn-config
+  envs:
+    - config/uvicorn_config.env  
+generatorOptions:
+  disableNameSuffixHash: true

@@ -1,0 +1,11 @@
+bases:
+- ../../base/uat
+resources:
+- ../base
+namespace: uat
+configMapGenerator:
+- name: rez-service-config
+  envs:  
+  - config/rez_config.env  
+generatorOptions:
+  disableNameSuffixHash: true

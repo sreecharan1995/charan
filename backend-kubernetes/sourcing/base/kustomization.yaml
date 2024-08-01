@@ -1,0 +1,8 @@
+resources:
+- deployment.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/backend-services
+  newTag: $IMAGE_TAG

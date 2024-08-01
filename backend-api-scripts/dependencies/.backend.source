@@ -1,0 +1,30 @@
+###############################################################
+# load backend specific data
+backend="$(head -1 ./.backend 2>/dev/null | awk '{ print $1 }')"
+
+backend="${backend:-local}"
+backend="$(echo "$backend" | tr A-Z a-z)"
+
+case "$backend" in
+	(uat)
+		backend="UAT"
+		backend_url="https://dependencies-uat.dev.spinvfx.com"
+		export API_URL="$backend_url"
+	;;
+	(dev)
+		backend="DEV"
+		backend_url="https://dependencies.dev.spinvfx.com"
+		export API_URL="$backend_url"
+	;;
+	*)
+		backend="LOCAL"
+		backend_url="$API_URL"
+	;;
+esac
+
+{
+echo 
+echo "Using $backend backend $backend_url"
+echo
+echo "To switch the backend use command './backend NAME' where NAME is one of 'local', 'dev' or 'uat'"
+} 1>&2

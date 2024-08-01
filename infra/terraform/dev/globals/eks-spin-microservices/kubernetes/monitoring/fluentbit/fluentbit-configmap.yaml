@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  cluster.name: "spinfx-dev-eks"
+  logs.region: "us-east-1"
+  http.server: "Off" 
+  http.port: "2020"
+  read.head: "Off"
+  read.tail: "On"
+kind: ConfigMap
+metadata:
+  name: fluent-bit-cluster-info
+  namespace: amazon-cloudwatch

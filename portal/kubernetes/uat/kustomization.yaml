@@ -1,0 +1,9 @@
+resources:
+- ../base
+namespace: uat
+configMapGenerator:
+- name: portal-config
+  envs:
+  - config/cfg_portal.env
+generatorOptions:
+  disableNameSuffixHash: true

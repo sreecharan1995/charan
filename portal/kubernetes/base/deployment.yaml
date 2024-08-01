@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  labels:
+    app: spin-msr
+    module: portal
+    env: dev
+    kustomize: portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: portal
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: portal
+        
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev
+      containers:
+      - image: image_name
+        name: portal
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 3000
+            name: http
+        envFrom:
+          - configMapRef:
+              name: portal-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: portal
+    env: dev
+  name: portal
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: portal
+    env: dev
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: http
+---

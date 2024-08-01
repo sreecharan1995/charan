@@ -1,0 +1,6 @@
+resources:
+- deployment.yaml
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/backend-services
+  newTag: $IMAGE_TAG

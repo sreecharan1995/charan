@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dev
+  name: configs-service
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    ## alb.ingress.kubernetes.io/tags: d-server-03cruxb0n03orf=d-server-03cruxb0n03orf
+    # 135.23.74.210-Ernesto 76.64.44.194-John 99.224.132.17-Erick 99.244.125.88-SpinFX 74.127.200.217-JP  205.175.213.116-Daniel 99.237.5.237-Bill 99.233.0.141-Ashish 
+    # 96.45.204.62-ashish's + alexandre's office computer 35.168.176.104-EKS Cluster IP 135.23.64.151-Zsolt 172.218.206.92-Herm-Spinvfx 72.139.198.63-JP's-cottage 74.127.201.36-JP's-cottage 159.203.18.7-Erick2 147.182.148.169-spinfx-cmd
+    # alb.ingress.kubernetes.io/inbound-cidrs: 135.23.74.210/32, 76.64.44.194/32, 99.224.132.17/32, 99.244.125.88/32, 74.127.200.217/32, 205.175.213.116/32, 99.237.5.237/32, 99.233.0.141/32, 96.45.204.62/32, 35.168.176.104/32, 135.23.64.151/32, 172.218.206.92/32, 72.139.198.63/32, 74.127.201.36/32, 159.203.18.7/32, 147.182.148.169/32
+    # alb.ingress.kubernetes.io/security-groups: sg-07dd74d8822d28c04, sg-0fef587078cdb3c29
+    alb.ingress.kubernetes.io/group.name: alb-spinvfx-external
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: $CERT
+spec:
+  ingressClassName: alb
+  rules:
+    - host: configs.dev.spinvfx.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: configs-service
+                port:
+                  number: 8000

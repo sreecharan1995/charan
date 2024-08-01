@@ -1,0 +1,11 @@
+<package_configuration version="1">
+   
+  <profile name="missing_bundle_packages">
+	<bundle name='missing_packages'>
+		<package name="alabaster" version=""/>
+		<package name="anyio" version="3.6v1"/>
+		<package name="nuke" version=""/>
+	</bundle>
+  </profile>
+
+</package_configuration>

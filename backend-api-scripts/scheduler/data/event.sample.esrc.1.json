@@ -1,0 +1,56 @@
+{
+  "version": "0",
+  "id": "6a7e8feb-b491-4cf7-a9f1-bf3703467718",
+  "detail-type": "Shotgun_Task_new",
+  "source": "sourcing-service",
+  "account": "111122223333",
+  "time": "2017-12-22T18:43:48Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:ec2:us-east-1:123456789012:instance/i-1234567890abcdef0"
+  ],
+  "detail": {
+    "id": "96781.3080.0",
+    "source": "sg",
+    "verified_source": false,
+    "proxy": {
+      "build_id": "815",
+      "build_date": "2023-01-12 13:57:52 EST",
+      "build_hash": "1bd0fb5bb323dd53a5651a649a8dea6cc2fda9d4",
+      "build_link": "https://bitbucket.org/spinvfx/spin_microservices/pipelines/results/815"
+    },
+    "site": "",
+    "event": {
+        "id": "96781.3080.0",
+        "meta": {
+          "type": "attribute_change",
+          "entity_id": 1246,
+          "new_value": "*Add fog and mist with depth",
+          "old_value": "*Add fog and mist.",
+          "entity_type": "Asset",
+          "attribute_name": "description",
+          "field_data_type": "text"
+        },
+        "user": {
+          "id": 88,
+          "type": "HumanUser"
+        },
+        "entity": {
+          "id": 1246,
+          "type": "Shot"
+        },
+        "project": {
+          "id": 666,
+          "type": "Project"
+        },
+        "operation": "update",
+        "created_at": "2022-02-01 20:53:08.523887",
+        "event_type": "Shotgun_Task_new",
+        "delivery_id": "3a5de4ee-8f05-4eac-b537-611e845352fc",
+        "session_uuid": "dd6a1d6a-83a0-11ec-8826-0242ac110006",
+        "attribute_name": "description",
+        "event_log_entry_id": 545175
+      },
+      "timestamp": "2022-02-01T20:53:09Z"
+  }
+}

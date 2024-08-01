@@ -1,0 +1,21 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: dependency-service-config
+  envs:  
+  - config/dependency-config.env
+- name: uvicorn-config
+  envs:
+    - config/uvicorn_config.env   
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=dependency-service"                

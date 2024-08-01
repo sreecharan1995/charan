@@ -1,0 +1,15 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+		"site": "Mumbai",
+		"division": "television",
+		"show": "wolf3"
+	},
+	"inherits": true,
+	"configuration": {
+		"a": null,
+		"c": 123,
+		"e": null
+	}
+}

@@ -1,0 +1,10 @@
+resources:
+- deployment.yaml
+secretGenerator:
+- name: shotgrid
+  envs:
+  - config/shotgrid_secrets.env
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/backend-services
+  newTag: $IMAGE_TAG

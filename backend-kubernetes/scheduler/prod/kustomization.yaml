@@ -1,0 +1,38 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: s3-prod-permission-matrix      
+    target:
+      labelSelector: "kustomize=scheduler-service"
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=scheduler-service"
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=scheduler-service-exec"
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: s3-prod-permission-matrix      
+    target:
+      labelSelector: "kustomize=scheduler-service-exec"      
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
+        value: s3-prod-sg-event-scripts      
+    target:
+      labelSelector: "kustomize=scheduler-service-exec"                       

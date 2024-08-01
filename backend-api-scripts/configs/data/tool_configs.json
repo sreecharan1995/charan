@@ -1,0 +1,34 @@
+{
+  "name": "event_tools",
+  "level": { "site": "Toronto" },
+  "description": "Configuration for scheduler service",
+  "current": true,
+  "inherits": true,
+  "created": "2023-Jan-26T15:00:05",
+  "created_by": "disabled",
+  "updated": "2023-Jan-26T16:07:27",
+  "configuration": {
+    "event_types": {
+      "shotgun_shot_change": {
+        "tool_to_run": "src/spinvfx/testing/tool_example1.py",
+        "exec_in_process": false,
+        "tool_config": {
+          "k1": "val7",
+          "k2": "val8",
+          "k3": "val9"
+        }
+      },
+      "shotgun_task_new": {
+        "tool_to_run": "src/spinvfx/testing/tool_example1.py",
+        "exec_in_process": true,
+        "tool_config": {
+          "k1": "val7",
+          "k2": "val8",
+          "k3": "val9"
+        }
+      }
+    }
+  }
+}
+
+

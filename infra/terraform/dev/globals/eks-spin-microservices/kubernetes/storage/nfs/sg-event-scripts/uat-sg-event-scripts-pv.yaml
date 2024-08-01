@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
+  name: spin-sg-event-scripts-uat
+  namespace: uat
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-csi
+  mountOptions:
+    - nfsvers=3
+  csi:
+    driver: nfs.csi.k8s.io
+    readOnly: false
+    # volumeHandle format: {nfs-server-address}#{sub-dir-name}#{share-name}
+    # make sure this value is unique for every share in the cluster
+    volumeHandle: tor-hspace.spinvfx.com#spin#sg-event-scripts#uat
+    volumeAttributes:
+      server: tor-hspace.spinvfx.com
+      share: /spin/ms_k8s_shared/sg-event-scripts/uat

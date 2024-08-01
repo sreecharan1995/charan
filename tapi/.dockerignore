@@ -1,0 +1,11 @@
+.env
+.gitignore
+.dockerignore
+.python-version
+pytest.ini
+backend.iml
+backend.code-workspace
+docker/
+.vscode/
+.pytest_cache/
+.flake8/

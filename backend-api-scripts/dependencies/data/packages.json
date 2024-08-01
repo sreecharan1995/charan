@@ -1,0 +1,15 @@
+ [
+      {
+        "name": "sphinx",
+        "version": "4.5.0"
+      },
+      {
+        "name": "fastapi",
+        "version": ""
+      },
+      {
+        "name": "alabaster",
+        "version": "0.7.12"
+      }
+]
+

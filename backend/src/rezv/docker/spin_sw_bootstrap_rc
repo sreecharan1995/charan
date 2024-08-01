@@ -1,0 +1,129 @@
+#!/usr/bin/bash
+
+# Spin Software Bootstrap.
+
+spin_sw_bootstrap_env_var_append()
+{
+    # Function to append a path to a specified env var.
+    #
+    # It will only append the path if the specified path is not already
+    # specified in the env var's list of paths.
+    #
+    # Arguments:
+    #     $1: The name of the environment variable.
+    #     $2: path string to append.
+    if [[ ":${!1}:" != *":${2}:"* ]]; then
+        eval export ${1}=\${${1}:+"\${${1}}:"}${2}
+    fi
+}
+
+spin_sw_bootstrap_env_var_prepend()
+{
+    # Function to prepend a path to a specified env var.
+    #
+    # It will only prepend the path if the specified path is not already
+    # specified in the env var's list of paths.
+    #
+    # Arguments:
+    #     $1: The name of the environment variable.
+    #     $2: path string to prepend.
+    if [[ ":${!1}:" != *":${2}:"* ]]; then
+        eval export ${1}=${2}\${${1}:+":\${${1}}"}
+    fi
+}
+
+spin_sw_bootstrap_setup_aliases()
+{
+    # This alias ensures that pip installed python packages are installed to
+    # ${SPIN_REZ_PYTHON_ROOT}, to keeping them separate from other packages.
+    alias rez-pip="rez-pip --prefix ${SPIN_REZ_PYTHON_PKGS_ROOT}"
+    alias rez-pip-local="rez-pip --prefix ${SPIN_REZ_LOCAL_ROOT}"
+}
+
+spin_sw_bootstrap_setup_graphviz()
+{
+    # Enable graphviz so that dot graphs for the command 'rez-context -g' and
+    # 'rez-depends -g' # will work.
+    OS_VERSION_STRING=os-CentOS-7.9.2009
+    ARCH_STRING=arch-x86_64
+    PLATFORM_STRING=platform-linux
+
+    # This alias ensures that pip installed python packages are installed to
+    # ${SPIN_REZ_PYTHON_ROOT}, to keeping them separate from other packages.
+    alias rez-pip="rez-pip --prefix ${SPIN_REZ_PYTHON_PKGS_ROOT}"
+    alias rez-pip-local="rez-pip --prefix ${SPIN_REZ_LOCAL_ROOT}"
+
+    # Make graphviz available so that the command will work after opening a shell
+    # with rez-env (it displays a dot graph of the current rez context):
+    GRAPHVIZ_ROOT=${SPIN_REZ_OPENSOURCE_ROOT}/graphviz/2.44.0/_v/a
+    spin_sw_bootstrap_env_var_prepend PATH ${GRAPHVIZ_ROOT}/bin
+    spin_sw_bootstrap_env_var_prepend LD_LIBRARY_PATH ${GRAPHVIZ_ROOT}/graphviz
+    spin_sw_bootstrap_env_var_prepend LD_LIBRARY_PATH ${GRAPHVIZ_ROOT}/lib
+}
+
+rezon() 
+{
+    # The rezon function is meant to be run to enable rez to be used.
+
+    # ROOT paths.
+    export SPIN_REZ_MAJOR_VERSION=2
+    export SPIN_REZ_MINOR_VERSION=103
+    export SPIN_REZ_PATCH_VERSION=4
+    export SPIN_REZ_SPIN_VERSION=spin.2
+    export SPIN_REZ_ROOT=/rez
+    export SPIN_REZ_PIPELINE_ROOT=${SPIN_REZ_ROOT}/pipeline
+    export SPIN_REZ_OPENSOURCE_ROOT=${SPIN_REZ_ROOT}/opensource
+    export SPIN_REZ_THIRDPARTY_ROOT=${SPIN_REZ_ROOT}/thirdparty
+    export SPIN_REZ_PYTHON_PKGS_ROOT=${SPIN_REZ_ROOT}/python_pkgs
+    export SPIN_REZ_IMPLICIT_ROOT=${SPIN_REZ_ROOT}/implicit
+    export SPIN_REZ_MICROSERVICES_ROOT=${SPIN_REZ_ROOT}/microservices
+    export SPIN_REZ_PKG_TEMPLATES_ROOT=${SPIN_REZ_ROOT}/pkg_templates
+    export SPIN_REZ_LOCAL_ROOT=~/rez_local
+
+    export SPIN_REZ_RELEASE_CATEGORIES=pipeline:microservices:opensource:thirdparty:python_pkgs:implicit:pkg_templates
+
+    export SPIN_REZ_INSTALL_ROOT=${SPIN_REZ_ROOT}/rez/${SPIN_REZ_MAJOR_VERSION}.${SPIN_REZ_MINOR_VERSION}.${SPIN_REZ_PATCH_VERSION}.${SPIN_REZ_SPIN_VERSION}
+
+    OS_VERSION_STRING=os-CentOS-7.9.2009
+    ARCH_STRING=arch-x86_64
+    PLATFORM_STRING=platform-linux
+
+    # Python Interpreter.
+    PYTHON_MAJOR_VERSION=2
+    PYTHON_MINOR_VERSION=7
+    PYTHON_PATCH_VERSION=5
+    PYTHON_BIN_PATH=${SPIN_REZ_OPENSOURCE_ROOT}/python/${PYTHON_MAJOR_VERSION}.${PYTHON_MINOR_VERSION}.${PYTHON_PATCH_VERSION}/${PLATFORM_STRING}/${ARCH_STRING}/${OS_VERSION_STRING}/bin
+
+    spin_sw_bootstrap_env_var_prepend PYTHONPATH ${SPIN_REZ_INSTALL_ROOT}/lib/python${PYTHON_MAJOR_VERSION}.${PYTHON_MINOR_VERSION}/site-packages
+    spin_sw_bootstrap_env_var_prepend PATH ${PYTHON_BIN_PATH}:${SPIN_REZ_INSTALL_ROOT}/bin/rez
+
+    source ${SPIN_REZ_INSTALL_ROOT}/completion/complete.sh
+
+    # Rez configuration.
+    export SPIN_SW_BOOTSTRAP_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+    export REZ_CONFIG_FILE=${SPIN_SW_BOOTSTRAP_ROOT}/src/rezv/docker/rezconfig.py
+    export SPIN_REZ_PLUGINS_PATH=${SPIN_SW_BOOTSTRAP_ROOT}/plugins
+
+    # If REZON is set to 1, then that means this function has been run at least
+    # once.
+    export REZON=1 
+
+    # Setup aliases that should always be available.
+    spin_sw_bootstrap_setup_aliases
+
+    # Setup graphviz so that rez-depends -g and rez-context -g will work.
+    spin_sw_bootstrap_setup_graphviz
+}
+
+# Code below this line always runs whenever this script is sourced. It's
+# meant to be run whenever a bash shell is opened.
+if [ ! -z ${REZON+rezon} ] && [ ${REZON} -eq 1 ]; then
+    # Rez was previously enabled. Set aliases and env vars that should always be
+    # set.
+
+    # Setup aliases that should always be available.
+    spin_sw_bootstrap_setup_aliases
+
+    # Setup graphviz so that rez-depends -g and rez-context -g will work.
+    spin_sw_bootstrap_setup_graphviz
+fi

@@ -1,0 +1,278 @@
+[
+  {
+    "id": "1",
+    "name": "beta",
+    "site": "Global",
+    "description": "Used on development only",
+    "create_date": "December 10, 2020, 10:00 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "default",
+    "site": "Global",
+    "description": "Currently useed by LUI",
+    "create_date": "January 20, 2021, 10:56 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "alpha",
+    "site": "Toronto",
+    "description": "First iteration (testing only)",
+    "create_date": "January 10, 2021, 9:45 AM",
+    "status": "Inactive",
+    "author": "Saurabh Gupta",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "beta",
+    "site": "Global",
+    "description": "Used on development only",
+    "create_date": "December 10, 2020, 10:00 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "default",
+    "site": "Global",
+    "description": "Currently useed by LUI",
+    "create_date": "January 20, 2021, 10:56 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "alpha",
+    "site": "Toronto",
+    "description": "First iteration (testing only)",
+    "create_date": "January 10, 2021, 9:45 AM",
+    "status": "Inactive",
+    "author": "Saurabh Gupta",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "beta",
+    "site": "Global",
+    "description": "Used on development only",
+    "create_date": "December 10, 2020, 10:00 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "default",
+    "site": "Global",
+    "description": "Currently useed by LUI",
+    "create_date": "January 20, 2021, 10:56 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "alpha",
+    "site": "Toronto",
+    "description": "First iteration (testing only)",
+    "create_date": "January 10, 2021, 9:45 AM",
+    "status": "Inactive",
+    "author": "Saurabh Gupta",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "name": "beta",
+    "site": "Global",
+    "description": "Used on development only",
+    "create_date": "December 10, 2020, 10:00 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "default",
+    "site": "Global",
+    "description": "Currently useed by LUI",
+    "create_date": "January 20, 2021, 10:56 AM",
+    "status": "Active",
+    "author": "Ashish Dantu",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "alpha",
+    "site": "Toronto",
+    "description": "First iteration (testing only)",
+    "create_date": "January 10, 2021, 9:45 AM",
+    "status": "Inactive",
+    "author": "Saurabh Gupta",
+    "used_by": [
+      {
+        "name": "string",
+        "level_type": "string",
+        "url": "string"
+      }
+    ],
+    "packages": [
+      {
+        "name": "string",
+        "version": "string",
+        "url": "string"
+      }
+    ]
+  }
+]

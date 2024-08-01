@@ -1,0 +1,282 @@
+#!/bin/bash
+
+source "../../env.source"
+
+######
+
+test -z "$(type curl)" && { echo "curl executable not in PATH" 1>&2; exit 1; }
+test -z "$(type jq)" && { echo "jq executable not in PATH" 1>&2; exit 1; }
+
+######
+
+test -z "$API_BASE_URI" && { echo "missing API_BASE_URI" 1>&2; exit 1; }
+
+export API_TOKEN_FILE=".api.token"
+export API_TOKEN="${API_TOKEN:-"$(head -1 "$API_TOKEN_FILE" 2>/dev/null)"}"
+export API_URL="${API_URL:-"${API_BASE_URI}:${API_PORT}/${API_ROOT_PATH#/}"}"
+export TMP_DIR=".tmp.api"
+
+######
+
+# load backend specifics
+test -r ".backend.source" && source ".backend.source"
+
+######
+
+orig="${0#./}"
+if test "${orig%%-*}" = "u"
+then
+	export API_SCRIPTS_AUTH_STRATEGY="NEVER"
+	orig="${orig#u-}"
+elif test "$oper" = "a"
+then
+	export API_SCRIPTS_AUTH_STRATEGY="ALWAYS"
+	orig="${orig#a-}"
+fi
+
+if test -z "$endpoint" # decide operation and endpoint based on script name
+then
+	oper="${orig%%-*}"
+	oper="${oper##*/}"
+	endpoint="/${orig#*-}"
+fi
+
+test "$endpoint" = "/index" && endpoint="/"
+
+params="$1"
+
+if test -n "$oper" && test -n "$(echo "$endpoint" |grep -Eo -- '-x\b')"
+then
+
+  endpoint="$(echo "$endpoint" | tr -- - /)"
+  while test -n "$params" && test -z "$(echo "$params" | grep -Eo -- '=')"
+  do
+	if test -z "$(echo "$endpoint" |grep -Eo -- '/x\b')" 
+	then
+		if test "${params}" = "${params%%.json}" && test "${params}" = "${params#*/}" # if contains / then assume file
+		then
+			echo "no 'x' to replace in endpoint path '$endpoint' to use arg '$params'" 1>&2
+			exit 0
+		else
+			break
+		fi
+	else
+		params="$params"
+	fi
+	endpoint="$(echo "$endpoint" | sed -e "s/\/x/\/$params/")"
+	shift
+	params="$1"
+  done
+
+else
+	endpoint="$(echo "$endpoint" | tr -- - /)"
+	params="$*"
+fi
+
+endpoint="$(echo "$endpoint" | sed -e 's/\/\//-/g')"
+endpoint="$(echo "$endpoint" | sed -e 's/--/-/g')"
+
+
+if test -n "$params" && test -n "$(echo "$params" | grep -Eo -- '=')" 
+then
+ if test "$params" = "${params#\?}"
+ then
+	params="?$(for p in $*; do test -n "$p" && test "$p" != "${p#*=}" && echo -n "$p&"; done | sed -e 's/&$//' | sed -e 's/\?\?//g')"
+ fi
+
+ url="$API_URL$endpoint$params"
+ params=""
+else
+ url="$API_URL$endpoint"
+fi
+
+rand="$RANDOM"
+
+mkdir -p "$TMP_DIR"
+tmp_headers_file=".tmp.headers.txt.$rand"
+tmp_body_file=".tmp.body.txt.$rand"
+tmp_error_file=".tmp.error.txt.$rand"
+
+function cmd_opts() {
+	cmd="$1"
+	echo "$cmd" | sed -e "s/curl/curl -o '$TMP_DIR\/$tmp_body_file' -D '$TMP_DIR\/$tmp_headers_file'/"
+}
+
+function cmd_method() {
+  method="$1"
+  cmd="$2"
+  token="$3"
+  test -n "$token" && test "null" != "$token" && token="--header 'Authorization: Bearer $token'"
+  case "$method" in
+  get)
+	method="$(echo "$method" | tr a-z A-Z)"
+	cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method $token/")"
+  ;;
+  delete)
+	method="$(echo "$method" | tr a-z A-Z)"
+	if test -n "$filename"
+	then
+		cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method -H 'Content-Type: application\/json' $token --data-binary '@$filename'/")"
+	else
+		cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method $token/")"
+	fi
+  ;;
+  post|put|patch)
+	method="$(echo "$method" | tr a-z A-Z)"
+	if test -n "$filename"
+	then
+		cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method -H 'Content-Type: application\/json' $token --data-binary '@$filename'/")"
+	else
+		cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method -H 'Content-Type: application\/json' $token/")"
+	fi
+  ;;
+  upload|postfile|putfile)
+	if test "$method" = 'putfile'
+	then
+		method="PUT"
+	else
+		method="POST"
+	fi
+	actualfilename="${filename#*:}"
+	dfilename="$(eval echo "$(eval echo "$actualfilename")")"
+	#doctype="${filename%%:*}"
+
+	if test -z "$dfilename" || ! test -r "$dfilename"
+	then
+		echo "ERROR: file not specified, does not exist or is unreadable" 1>&2
+		exit 10
+	fi
+
+	#if test "$actualfilename" = "$doctype"
+	#then
+	#	doctype="${endpoint##*/}"
+	#	echo DOCTYPE="$doctype"
+	#	if test "$doctype" != "$(echo "$doctype" | tr 'a-z' 'A-Z')"
+	#	then
+	#		echo "ERROR: doc type is missing, use as: DOCTYPE:$dfilename with DOCTYPE 'IMAGE', 'THUMBNAIL', etc.. (app dependent)" 1>&2
+	#		exit 11
+	#	fi
+	#elif test "$dfilename" != "${dfilename#*:}"
+	#then
+	#	echo "ERROR: unsupported char ':' in filename: $dfilename" 1>&2
+	#	exit 12
+	#fi
+
+	dfilename="$(echo "$dfilename" | sed -e 's/\//\\\//g')"
+	#formdata="-F docType='$doctype' -F docFilename='${dfilename##*/}' -F doc=@$dfilename"
+	formdata="-F file=@$dfilename"
+	cmd="$(echo "$cmd" | sed -e "s/curl/curl -X $method $token $formdata/")"
+  ;;
+  esac
+  echo "$cmd" 
+}
+
+function invoke_method() {
+	method="$1"
+	token="$2"
+	cmd="curl -S -s -k '$url'"
+	echo 1>&2
+	cmd="$(cmd_method "$method" "$cmd" "$token")"
+	echo "$cmd" 1>&2
+	echo 1>&2
+	eval "$(cmd_opts "$cmd")" 2>"$TMP_DIR/$tmp_error_file"
+	ccode=$?
+	if test $ccode -ne 0
+	then
+		echo -n "ERROR: " 1>&2
+		test -e "$TMP_DIR/$tmp_error_file" && cat "$TMP_DIR/$tmp_error_file" 1>&2
+		return $ccode
+	fi
+	test -e "$TMP_DIR/$tmp_headers_file" && cat "$TMP_DIR/$tmp_headers_file" 1>&2
+	if test -s "$TMP_DIR/$tmp_body_file"
+	then	
+		if test -n "$(grep 'application/json' "$TMP_DIR/$tmp_headers_file" 2>/dev/null | head -1)"
+		then
+			cat "$TMP_DIR/$tmp_body_file" | jq . 2>"$TMP_DIR/$tmp_error_file"
+			if test $? -ne 0
+			then
+				echo "JSON PROCESSING FAILED:" 1>&2
+				echo 1>&2
+				cat "$TMP_DIR/$tmp_error_file" 1>&2
+				echo 1>&2
+				echo "BODY:" 1>&2
+				echo 1>&2
+				cat "$TMP_DIR/$tmp_body_file"
+				echo 1>&2
+			fi
+		else
+			cat "$TMP_DIR/$tmp_body_file" 
+		fi
+	else
+		echo "(empty body)" 1>&2
+	fi
+	echo 1>&2	
+	rcode="$(head -1 "$TMP_DIR/$tmp_headers_file" 2>&1 | grep -Eo 'HTTP/.* ([0-9][0-9][0-9]) .*' | grep -Eo '[0-9][0-9][0-9]' )"
+	/bin/rm -f "$TMP_DIR/$tmp_headers_file" "$TMP_DIR/$tmp_body_file" "$TMP_DIR/$tmp_error_file"
+	test "$rcode" = "401" && return 11
+	return 0
+}
+
+if test -n "$oper"
+then
+	filename="$(for f in $*; do if test "$f" = "${f#*=}"; then echo "$f"; break; fi; done)"
+
+	if test -n "$filename" && ! test -f "$filename" && test "$filename" = "${filename#*/}" #... and do not contains a slash
+	then
+		echo "$filename: file not found" 1>&2
+		exit 1
+	fi
+
+	filename="$(echo "$filename" | sed -e 's/\//\\\//g')"
+	
+	case "$oper" in
+		get|fetch|search|list)
+			method="get"
+		;;
+		new|create|post)
+			method="post"
+		;;
+		put|upd|update)
+			method="put"
+		;;
+		patch)
+			method="patch"
+		;;
+		del|delete)
+			method="delete"
+		;;
+		upload)
+			method="upload"
+		;;
+		putfile)
+			method="putfile"
+		;;
+		postfile)
+			method="postfile"
+		;;
+
+		download)
+			method="get"
+		;;
+
+	esac
+
+	test -n "$API_SCRIPTS_AUTH_STRATEGY" && { echo 1>&2; echo "Effective bearer token auth policy is $API_SCRIPTS_AUTH_STRATEGY" 1>&2; }
+
+	if test "$API_SCRIPTS_AUTH_STRATEGY" = "ALWAYS"
+	then
+		if test -n "$API_TOKEN" && test "null" != "$API_TOKEN"
+		then
+			invoke_method "$method" "$API_TOKEN"
+		else
+			echo "auth strategy is set to ALWAYS but not usable token found" 1>&2
+			exit 1
+		fi
+	else 
+		invoke_method "$method"
+		if test $? -eq 11 && test -n "$API_TOKEN" && test "null" != "$API_TOKEN"
+		then
+			test "$API_SCRIPTS_AUTH_STRATEGY" = "NEVER" || invoke_method "$method" "$API_TOKEN"
+		fi
+	fi
+fi

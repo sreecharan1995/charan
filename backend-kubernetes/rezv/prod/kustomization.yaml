@@ -1,0 +1,19 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: rez-service-config
+  envs:  
+  - config/rez_config.env  
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=rez-service"       
+

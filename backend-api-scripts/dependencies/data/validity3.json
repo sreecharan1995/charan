@@ -1,0 +1,18 @@
+{
+  "version": "0",
+  "id": "a11f20d5-19c3-1ab2-e6f4-8604b335d0e0",
+  "detail-type": "profile-validation-completed",
+  "source": "rez-service",
+  "account": "301653940240",
+  "time": "2022-07-13T20:29:42Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "in_response_to_event": "b0f986e6-93f9-ef78-f8e1-d9f029e5b0a9",
+    "type": "profile",
+    "id": "profile_xxbtvhojiclh",
+    "validation_result": "Valid",
+    "result_reason": "",
+    "rez_cache": "sphinx:4.5.0 /opt/packages/Sphinx/4.5.0"
+  }
+}

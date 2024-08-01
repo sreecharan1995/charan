@@ -1,0 +1,14 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+		"site": "Mumbai",
+		"division": "film",
+		"show": "sandy"
+	},
+	"inherits": true,
+	"configuration": {
+		"c": 123,
+		"0": "99999"
+	}
+}

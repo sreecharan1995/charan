@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if test $# -eq 1
+then
+	export barg="$(echo "$1" | tr A-Z a-z | awk '{ print $1 }')"
+	case "$barg" in
+		(uat) echo "uat" >.backend ;;
+		(dev) echo "dev" >.backend ;;
+		(local) echo "local" >.backend ;;
+		(*) echo "bad usage: arg 1 is not one of 'local', 'dev' or 'uat'" 1>&2; exit 1 ;;
+	esac
+elif test $# -ne 0
+then
+		echo "usage: no args to show current used backend, or arg 1 with one of 'local', 'dev' or 'uat' to set backend to use" 1>&2
+	       	exit 1 
+fi
+
+source ".backend.source"
+echo

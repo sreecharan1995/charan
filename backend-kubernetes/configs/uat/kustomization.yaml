@@ -1,0 +1,11 @@
+bases:
+- ../../base/uat
+resources:
+- ../base
+namespace: uat
+configMapGenerator:
+- name: configs-service-config
+  envs:
+  - config/cfg_config.env
+generatorOptions:
+  disableNameSuffixHash: true

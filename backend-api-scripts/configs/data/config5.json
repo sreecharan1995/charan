@@ -1,0 +1,21 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+		"site": "Mumbai",
+		"division": "television"
+	},
+	"inherits": true,
+	"configuration": {
+		"c": 123,
+		"0": "88888",
+		"d": {
+			"x": 1,
+			"y": 10,
+			"z": {
+				"m": "mmm",
+				"n": "nnnn"
+			}
+		}
+	}
+}

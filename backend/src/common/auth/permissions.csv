@@ -1,0 +1,11 @@
+"Role\Action","swds_create-profile","swds_update-profile",swds_view-profile,"swds_create-bundle","swds_view-bundles","swds_update-bundle","swds_delete-bundle",swds_view-packages,swds_delete-profile,"levels_sync-tree",levels_view,levels_view-tree-info,configs_view-config,configs_update-config,configs_create-config,configs_delete-config,sourcing_view-stats
+"sg_permission_admin","X","X",X,"X","X","X","X",X,X,"X",X,X,X,X,X,X,X
+"sg_permission_pipeline","X","X",X,"X","X","X","X",X,X,"X",X,X,X,X,X,X,X
+"sg_permission_pipeline_manager","X","X",X,"X","X","X","X",,,"X",,,X,X,X,X,
+"sg_permission_producer",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_production_manager",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_production",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_supervisor",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_artist",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_editorial",,,X,"X","X",,,,,,,,X,X,X,,
+"sg_permission_lead",,,X,"X","X",,,,,,,,X,X,X,,

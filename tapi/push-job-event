@@ -1,0 +1,178 @@
+##!/bin/bash
+
+# purpose:
+# receive an event "type" and type-dependent details to report job progress as an event
+
+#####################################################################
+
+# use some env vars:
+
+export AWS_REGION_NAME="$EB_REGION_NAME"
+export AWS_ACCESS_KEY_ID="$EB_ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$EB_SECRET_ACCESS_KEY"
+
+export AWS_SOURCING_BUS_NAME="$EB_SOURCING_BUS_NAME"
+export AWS_VALIDATION_BUS_NAME="$EB_VALIDATION_BUS_NAME"
+
+export AWS_SCHEDULER_BUS_NAME="${EB_SOURCING_BUS_NAME:-"dev-bus"}" # use sourcing bus by default (for now) or 'dev-bus'
+
+# define a function that prints some usage info
+
+function print_usage() {
+
+	echo
+	echo "Example usages:"
+	echo 
+	echo "$0 started"
+	echo "$0 finished 0 # where 0 indicates the exit code"
+	echo "$0 reschedule 1678291147 # using seconds since 1970"
+	echo "$0 reschedule 1678291213813374295 # using nanoseconds since 1970"
+	echo
+	echo "A zero exit code means the event was pushed, any other indicates some kind of failure"
+	echo 
+	echo "Notice the 'started' and 'finished' event types are triggered automatically from runjob,"
+	echo "so explicit calls to this $0 script from the tool script are used to indicate rescheduling"
+	echo 
+	echo "This script auto-detects job_id, job_name, bus, etc from env vars but it accepts an option"
+	echo "to override the job_id. Example:"
+	echo
+	echo "$0 reschedule -job-sg-34325-56-0 1678291213813374295"
+	echo 
+}
+
+# define a function to send events via aws event bridge:
+
+function send_status_event() {
+
+	event_type="$1" # finished, started
+	event_detail="$2"
+	event_bus="$AWS_SCHEDULER_BUS_NAME"
+	event_source="scheduler-job"	
+
+	if ! test -n "$1"
+	then
+		echo "WARN: failed to send status event, no type specified" 1>&2
+		return 1
+	fi
+
+	tmpentriesfile="/tmp/event-$RANDOM-$RANDOM.json"
+
+cat<<EEOOFF>"$tmpentriesfile"
+[
+  {
+    "Source": "$event_source",
+    "DetailType": "job-status-$event_type",
+    "EventBusName": "$event_bus",
+    "Detail": "$event_detail"
+  }
+]
+EEOOFF
+
+	put_output="$(aws events put-events --entries "file://$tmpentriesfile")"
+	put_ecode=$?
+
+	/bin/rm -f "$tmpentriesfile"
+
+	if test $put_ecode == 0
+	then
+		echo "DEBUG: sent '$event_type' status event: $put_output: details: '$event_detail'" 1>&2
+		return 0
+	else
+		echo "WARN: failed to send '$event_type' status event: aws cli failed with exit code $put_ecode, event detail: '$event_detail'" 1>&2
+		return 1
+	fi
+}
+
+# detect job_id and job_name from env vars:
+
+job_id="$(echo "$1" | grep -Po '^-job-[\w-]+')"
+
+job_id="${job_id:-"$JOBCONF_JOB_ID"}"
+job_name="${JOBCONF_JOB_NAME:-"${job_id}"}"
+
+# validate args:
+
+if ! test -n "$job_id"
+then
+	echo "ERROR: no job_id in env" 1>&2
+	exit 128
+fi
+
+if ! test -n "$job_name"
+then
+	echo "ERROR: no job_name in env or default failed" 1>&2
+	exit 128
+fi
+
+# parse args
+
+while test "$1" != "${1#-}"
+do
+	shift
+done
+
+event_type="${1:-""}"
+
+function parse_stamp()
+{
+	event_stamp="${1:-"$(date '+%s%N')"}"
+
+	if test -n "$(echo "$event_stamp" |grep -Po '^(\d{10})$')"
+	then
+		event_stamp="$event_stamp$(date "+%N")"
+	elif test -z "$(echo "$event_stamp" |grep -Po '^(\d{19})$')"
+	then
+	        echo "ERROR: invalid event timestamp in arg 2: '$2'" 1>&2
+	        exit 128
+	fi
+}
+
+case "$event_type" in
+
+started)
+	parse_stamp "$2"
+
+	echo "pushing: event_type: $event_type  time: $event_stamp" 1>&2
+	send_status_event "started"    '{ \"job_id\": \"'"$job_id"'\", \"started_at\": '"$event_stamp"' }'
+	exit $?
+;;
+
+finished)
+	event_exitcode="${2:-''}"
+
+	if test -z "$(echo "$event_exitcode" | grep -Po '^-?\d{1,3}$')" || test "$event_exitcode" -gt 128
+	then
+	        echo "ERROR: invalid finished event exit code in arg 2: '$2'" 1>&2
+	        exit 128
+	fi
+
+	event_exitcode="$((event_exitcode + 0))"
+
+	parse_stamp "$3"
+
+	echo "pushing: event_type: $event_type  time: $event_stamp  exit_code: $event_exitcode" 1>&2
+	send_status_event "finished"   '{ \"job_id\": \"'"$job_id"'\", \"finished_at\": '"$event_stamp"', \"exit_code\": '"$event_exitcode"' }'
+	exit $?
+;;
+reschedule)
+	parse_stamp "$2"
+
+	echo "event_type: $event_type  time: $event_stamp" 1>&2
+	send_status_event "reschedule"    '{ \"job_id\": \"'"$job_id"'\", \"due_at\": '"$event_stamp"' }'
+	exit $?
+;;
+error)
+	parse_stamp "" # current
+	error_detail="${2:-'unspecified error'}"
+
+	echo "pushing: event_type: $event_type  time: $event_stamp   detail: '$error_detail'" 1>&2
+	send_status_event "error"    '{ \"job_id\": \"'"$job_id"'\", \"error_at\": '"$event_stamp"', \"error_detail\": \"'"$error_detail"'\" }'
+	exit $?
+;;
+*)
+	echo "progress event type in arg 1 '$event_type' is invalid" 1>&2
+	print_usage
+	exit 128
+;;
+esac
+

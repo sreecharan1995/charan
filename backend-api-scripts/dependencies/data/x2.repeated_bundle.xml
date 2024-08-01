@@ -1,0 +1,34 @@
+<package_configuration version="1">
+   
+   <profile name="x1">
+		<package name="maya" version="2020.4"/>
+		<package name="katana" version="3.6v1"/>
+		<package name="nuke" version="11.3v4"/>
+
+		<bundle name="nice-one">
+			<package name="rex" version="11.3v4"/>
+			<package name="lantern"/>
+		</bundle>
+
+		<bundle>
+			<package name="nuke" version="11.3v4"/>
+			<package name="nuk3"/>
+		</bundle>
+
+		<bundle name="valid_empty">
+		</bundle>
+		
+		<bundle name="notgood">
+			<package name="nuk1"/>
+			<package name="nuk6" version="2009a"/>
+			<package version="3.66"/>
+		</bundle>
+	
+		<bundle name="nice-one">
+			<package name="rex" version="11.3v4"/>
+			<package name="lantern"/>
+		</bundle>
+
+  </profile>
+
+</package_configuration>

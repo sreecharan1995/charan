@@ -1,0 +1,184 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-service
+  labels:
+    app: spin-msr
+    module: scheduler-service
+    env: dev
+    kustomize: scheduler-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: scheduler-service
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: scheduler-service
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev
+      volumes:
+      - name: permission-matrix
+        persistentVolumeClaim:
+          claimName: permission-matrix
+      containers:
+      - image: image_name
+        name: scheduler-service
+        imagePullPolicy: Always
+        command: ["pipenv", "run", "scheduler-server"]
+        envFrom:
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: auth-config
+          - secretRef:
+              name: shotgrid
+          - configMapRef:
+              name: common-config
+          - configMapRef:
+              name: uvicorn-config
+          - configMapRef:
+              name: scheduler-config
+        ports:
+          - containerPort: 8000
+            name: http
+        volumeMounts:
+          - name: permission-matrix
+            mountPath: /mount/permission-matrix    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: scheduler-service
+    env: dev
+  name: scheduler-service
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: scheduler-service
+    env: dev
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-service-exec
+  labels:
+    app: spin-msr
+    module: scheduler-service-exec
+    env: dev
+    kustomize: scheduler-service-exec
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 300
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: scheduler-service-exec
+      env: dev
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: scheduler-service-exec
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev
+      volumes:
+      - name: permission-matrix
+        persistentVolumeClaim:
+          claimName: permission-matrix
+      - name: spin-rez
+        persistentVolumeClaim:
+          claimName: spin-rez
+          readOnly: true
+      - name: ms-k8-job-shared
+        persistentVolumeClaim:
+          claimName: ms-k8-job-shared
+      - name: spin-shared
+        persistentVolumeClaim:
+          claimName: spin-shared
+      serviceAccountName: scheduler
+      containers:
+      - image: image_name
+        name: scheduler-service-exec
+        imagePullPolicy: Always
+        command: ["pipenv", "run", "scheduler-exec"]
+        envFrom:
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: auth-config
+          - secretRef:
+              name: shotgrid
+          - configMapRef:
+              name: common-config
+          - configMapRef:
+              name: uvicorn-config
+          - configMapRef:
+              name: scheduler-config
+          - configMapRef:
+              name: rez-config
+        volumeMounts:
+          - name: permission-matrix
+            mountPath: /mount/permission-matrix
+          - name: spin-rez
+            mountPath: /mount/spin-rez 
+          - name: ms-k8-job-shared
+            mountPath: /mount/ms-k8-job-shared                                   
+          - name: spin-shared
+            mountPath: /spin                                   
+        readinessProbe:
+          exec:
+            command:
+            - pipenv
+            - run
+            - scheduler-exec-health
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          failureThreshold: 3
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - pipenv
+            - run
+            - scheduler-exec-health
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          failureThreshold: 1
+          timeoutSeconds: 5            

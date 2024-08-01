@@ -1,0 +1,75 @@
+# Pipfile
+
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+pytest = "*"
+yapf = "*"
+flake8 = "*"
+pdoc = "*"
+autopep8 = "*"
+
+[requires]
+python_version = "3.7"
+
+[packages]
+fastapi = "*"
+# fastapi = {extras = [ "all",]}
+uvicorn = {version = "*", extras = ["standard"]}
+boto3 = "*"
+requests = "*"
+pydantic = "*"
+shotgun-api3 = {ref = "v3.3.3", git = "https://github.com/shotgunsoftware/python-api.git"}
+python-multipart = "*"
+cachetools = "*"
+jsonpickle = "*"
+pyjwt = "*"
+cryptography = "*"
+fastapi-permissions = {editable = true, ref = "0.2.6", git = "https://github.com/holgi/fastapi-permissions.git"}
+deepdiff = "*"
+rez = "*"
+httpx = "*"
+vendor = "*" # TODO: needed?
+kubernetes = "*"
+
+[scripts]
+tests = "pytest -v src/"
+backend-tests = "pytest -v src/"
+dependency-tests = "pytest -s -v src/dependency/test"
+dependency-server = "uvicorn main_api:app --app-dir src/dependency --host 0.0.0.0 --port 8000"
+dependency-server-dev = "uvicorn main_api:app --reload --app-dir src/dependency --port 8001"
+rezv-tests = "pytest -s -v src/rezv/test"
+rezv-server = "uvicorn main_api:app --app-dir src/rezv --host 0.0.0.0 --port 8000"
+rezv-server-dev = "uvicorn main_api:app --reload --app-dir src/rezv --port 8002"
+level-tests = "pytest -s -v src/level/test"
+level-server = "uvicorn main_api:app --app-dir src/level --host 0.0.0.0 --port 8000"
+level-server-dev = "uvicorn main_api:app --reload --app-dir src/level --port 8003"
+level-sync = "python src/level/main_sync.py"
+level-sync-health = "python src/level/main_health.py"
+configs-tests = "pytest -s -v src/configs/test"
+configs-server = "uvicorn main_api:app --app-dir src/configs --host 0.0.0.0 --port 8000"
+configs-server-dev = "uvicorn main_api:app --reload --app-dir src/configs --port 8004"
+sourcing-tests = "pytest -s -v src/sourcing/test"
+sourcing-server = "uvicorn main_api:app --app-dir src/sourcing --host 0.0.0.0 --port 8000"
+sourcing-server-dev = "uvicorn main_api:app --reload --app-dir src/sourcing --port 8005"
+scheduler-tests = "pytest -s -v src/scheduler/test"
+scheduler-server = "uvicorn main_api:app --app-dir src/scheduler --host 0.0.0.0 --port 8000"
+scheduler-exec = "python src/scheduler/main_exec.py"
+scheduler-exec-tool = "python src/scheduler/main_exec_tool.py"
+scheduler-exec-health = "python src/scheduler/main_health.py"
+scheduler-server-dev = "uvicorn main_api:app --reload --app-dir src/scheduler --port 8006"
+
+dependency-docs = "pdoc -o .pdocs/dependency src/dependency/api src/dependency/domain src/dependency/service src/dependency/dependency_settings.py src/common/"
+rezv-docs = "pdoc -o .pdocs/rezv src/rezv/api src/rezv/domain src/rezv/service src/rezv/rez_settings.py src/common/"
+level-docs = "pdoc -o .pdocs/level src/level/api src/level/domain src/level/service src/level/level_settings.py src/common/"
+configs-docs = "pdoc -o .pdocs/configs src/configs/api src/configs/domain src/configs/service src/configs/configs_settings.py src/common/"
+scheduler-docs = "pdoc -o .pdocs/scheduler src/scheduler/api src/scheduler/domain src/scheduler/scheduler_settings.py src/common/"
+sourcing-docs = "pdoc -o .pdocs/sourcing src/sourcing/api src/sourcing/domain src/sourcing/service src/sourcing/sourcing_settings.py src/common/"
+
+#docs = "pdoc -o .pdocs src/common/ src/rezv/ src/level/ src/scheduler/ src/sourcing/ src/configs/ src/dependency/ !configs.main_api !dependency.main_api !level.main_api"
+docs = "pdoc -o .pdocs src/ !src.configs.main_api !src.dependency.main_api !src.level.main_api"
+
+# docs = "pdoc -o .pdocs src/common/ src/dependency/api src/dependency/domain src/dependency/service src/dependency/dependency_settings.py src/rezv/api src/rezv/domain src/rezv/service src/rezv/rez_settings.py src/level/api src/level/domain src/level/service src/level/level_settings.py src/configs/api src/configs/domain src/configs/service src/configs/configs_settings.py src/scheduler src/scheduler/api src/scheduler/domain src/scheduler/scheduler_settings.py src/sourcing/api src/sourcing/domain src/sourcing/service src/sourcing/sourcing_settings.py"

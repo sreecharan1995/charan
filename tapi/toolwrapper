@@ -1,0 +1,31 @@
+#!/bin/bash
+
+tool_script="$1"
+json_file="$2"
+
+if ! test -f "$json_file"
+then
+	echo "job config json file missing: '$json_file'" 1>&2
+	exit 128
+fi
+
+# extract tool config from json file and inject into environment
+while read -r key value
+do
+	export "$key"="$value"
+done < <(jq -r .tool_config.tool_config "$json_file" | jq -r 'to_entries[] | "\(.key) \(.value)"')
+
+if test -z "$(which "$tool_script")" # check the tool is actually an existing command
+then
+	echo "dumping environment for debugging purposes:" 1>&2
+	env 1>&2
+	echo "tool script missing from PATH or unable to locate from current directory ($PWD): '$tool_script'" 1>&2
+	exit 128
+else
+	echo "found tool: '$tool_script'" 1>&2
+fi
+
+# call tool passing json_file as arg with the env loaded:
+"$tool_script" "$json_file"
+
+exit $?

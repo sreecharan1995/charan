@@ -1,0 +1,178 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: levels-service
+  labels:
+    app: spin-msr
+    module: levels-service
+    env: dev
+    kustomize: levels-service
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: levels-service
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: levels-service
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+                - key: Environment
+                  operator: In
+                  values:
+                  - dev
+      volumes:
+      - name: levels-tree-sync
+        persistentVolumeClaim:
+          claimName: levels-tree
+      - name: permission-matrix
+        persistentVolumeClaim:
+          claimName: permission-matrix        
+      containers:
+      - image: image_name
+        name: levels-service
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: common-config        
+          - configMapRef:
+              name: level-config
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: auth-config
+        ports:
+          - containerPort: 8000
+            name: http
+        volumeMounts:
+          - name: levels-tree-sync
+            mountPath: /mount/levels-tree
+          - name: permission-matrix
+            mountPath: /mount/permission-matrix  
+        command: ["pipenv", "run", "level-server"]
+        livenessProbe:
+          httpGet:
+            path: /info
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:   
+          httpGet:
+            path: /info
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: levels-service
+    env: dev
+  name: levels-service
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: levels-service
+    env: dev
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: levels-service-tree-sync
+  labels:
+    app: spin-msr
+    module: levels-service-tree-sync
+    env: dev
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 300
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: levels-service-tree-sync
+      env: dev
+  strategy:
+    type: Recreate
+  template:  
+    metadata:
+      labels:
+        app: spin-msr
+        module: levels-service-tree-sync
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+                - key: Environment
+                  operator: In
+                  values:
+                  - dev
+      volumes:
+      - name: levels-tree-sync
+        persistentVolumeClaim:
+          claimName: levels-tree    
+      containers:
+      - image: image_name
+        name: tree-sync
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: common-config
+          - configMapRef:
+              name: level-sync-config
+          - configMapRef:
+              name: level-config              
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: auth-config
+          - secretRef:
+              name: shotgrid              
+        volumeMounts:
+          - name: levels-tree-sync
+            mountPath: /mount/levels-tree
+        command: ["pipenv", "run", "level-sync"]
+        readinessProbe:
+          exec:
+            command:
+            - pipenv
+            - run
+            - level-sync-health
+          initialDelaySeconds: 180
+          periodSeconds: 60
+          failureThreshold: 3
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - pipenv
+            - run
+            - level-sync-health
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          failureThreshold: 1
+          timeoutSeconds: 5

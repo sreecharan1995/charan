@@ -1,0 +1,15 @@
+bases:
+- ../../base/uat
+resources:
+- ../base
+namespace: uat
+configMapGenerator:
+- name: sourcing-config
+  envs:  
+  - config/sourcing-config.env
+secretGenerator:
+- name: sourcing-config-secrets
+  envs:  
+  - config/sourcing-config-secrets.env  
+generatorOptions:
+  disableNameSuffixHash: true     

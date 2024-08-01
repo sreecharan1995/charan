@@ -1,0 +1,22 @@
+resources:
+- deployment.yaml
+secretGenerator:
+- name: shotgrid
+  envs:
+  - config/shotgrid_secrets.env
+configMapGenerator:
+  - name: uvicorn-config
+    envs:
+    - config/uvicorn_config.env
+  - name: scheduler-config
+    envs:
+    - config/scheduler_config.env
+  - name: rez-config
+    envs:
+    - config/rez_config.env
+generatorOptions:
+  disableNameSuffixHash: true
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/backend-services
+  newTag: $IMAGE_TAG

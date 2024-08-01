@@ -1,0 +1,24 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+		"site": "Mumbai",
+		"division": "film",
+		"show": "sandy",
+		"sequence_type": "asset",
+		"sequence": "asset11"
+	},
+	"inherits": true,
+	"configuration": {
+		"c": 123,
+		"0": "88888",
+		"d": {
+			"x": 111,
+			"y": 10,
+			"z": {
+				"m": "xxxx",
+				"n": "nnnn"
+			}
+		}
+	}
+}

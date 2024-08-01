@@ -1,0 +1,8 @@
+{
+	"name": "invalid_name3",
+	"packages": [		
+		{ "name": "pack1", "version": "6.7.8" },
+		{ "name": [], "version": "6.7.8.9" }
+
+	]
+}

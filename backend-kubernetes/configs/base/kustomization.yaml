@@ -1,0 +1,12 @@
+resources:
+- deployment.yaml
+configMapGenerator:
+- name: configs-service-common
+  envs:  
+  - config/configs_common.env
+generatorOptions:
+  disableNameSuffixHash: true
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/backend-services
+  newTag: $IMAGE_TAG

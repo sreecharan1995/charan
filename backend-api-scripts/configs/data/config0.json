@@ -1,0 +1,13 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+	},
+	"inherits": false,
+	"configuration": {
+		"a": 100000,
+		"show_name": "<show>",
+		"<show>_type": "<division>",
+		"code": "<show_code>"
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"name": "bundle_name3",
+	"description": "a desc for bundle name 3",
+	"packages": [		
+		{ "name": "alabaster", "version": "1.4.5" },
+		{ "name": "sphinx", "version": "4.5.0" }
+	]
+}

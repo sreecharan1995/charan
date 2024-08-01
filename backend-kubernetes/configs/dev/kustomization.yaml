@@ -1,0 +1,11 @@
+bases:
+- ../../base/dev
+resources:
+- ../base
+namespace: dev
+configMapGenerator:
+- name: configs-service-config
+  envs:
+  - config/cfg_config.env
+generatorOptions:
+  disableNameSuffixHash: true  

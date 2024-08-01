@@ -1,0 +1,30 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: configs-service-config
+  envs:
+  - config/cfg_config.env
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+        value: s3-prod-permission-matrix      
+    target:
+      labelSelector: "kustomize=configs-service"  
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/1/persistentVolumeClaim/claimName
+        value: s3-prod-configs-configurations      
+    target:
+      labelSelector: "kustomize=configs-service"
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=configs-service"

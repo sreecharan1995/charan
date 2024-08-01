@@ -1,0 +1,9 @@
+resources:
+- ../base
+namespace: dev
+configMapGenerator:
+- name: portal-config
+  envs:
+  - config/cfg_portal.env
+generatorOptions:
+  disableNameSuffixHash: true

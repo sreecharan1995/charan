@@ -1,0 +1,155 @@
+[
+  {
+    "id": "config_etsfxlpcbiss",
+    "level": "Toronto",
+    "config": "config file1",
+    "author": "Jim Doe",
+    "description": "default_config_for_michelle",
+    "created_at": "2022-Aug-15T09:11:01",
+    "status": "active"
+  },
+  {
+    "id": "config_bmvvgbuastxu",
+    "level": "Toronto",
+    "config": "config file2",
+    "author": "Jim Doe",
+    "description": "Aug 8 22 default config - created after the DB cleanup",
+    "created_at": "2022-Aug-08T13:57:28",
+    "status": "active"
+  },
+  {
+    "id": "config_hnjkxytbynxx",
+    "level": "Mumbai",
+    "config": "config file3",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:02:53",
+    "status": "inactive"
+  },
+  {
+    "id": "config_uaefwrtidylk",
+    "level": "Global",
+    "config": "config file4",
+    "author": "Jane Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:10:24",
+    "status": "inactive"
+  },
+  {
+    "id": "config_fxqrgvheqehe",
+    "level": "Toronto",
+    "config": "config file5",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-11T20:03:00",
+    "status": "active"
+  },
+  {
+    "id": "config_utqpuaqnmuco",
+    "level": "Global",
+    "config": "config file6",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:03:41",
+    "status": "invalid"
+  },
+  {
+    "id": "config_ojruyccuaeaz",
+    "level": "Toronto",
+    "config": "config file7",
+    "author": "Jim Doe",
+    "description": "Aug 8 22 default config - created after the DB cleanup",
+    "created_at": "2022-Aug-15T09:14:32",
+    "status": "valid"
+  },
+  {
+    "id": "config_lefyihnxnguk",
+    "level": "Mumbai",
+    "config": "config file8",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:09:54",
+    "status": "invalid"
+  },
+  {
+    "id": "config_eccovmfpfsuk",
+    "level": "Toronto",
+    "config": "config file9",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-08T16:02:41",
+    "status": "invalid"
+  },
+  {
+    "id": "config_fbhpaqitkypw",
+    "level": "Global",
+    "config": "config file10",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-11T20:55:20",
+    "status": "invalid"
+  },
+  {
+    "id": "config_fhlmtbikyyst",
+    "level": "Toronto",
+    "config": "config file11",
+    "author": "testtesttestss",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T08:57:53",
+    "status": "invalid"
+  },
+  {
+    "id": "config_kkalewmznoqq",
+    "level": "Global",
+    "config": "config file12",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:07:22",
+    "status": "invalid"
+  },
+  {
+    "id": "config_uxfbmzhkffsz",
+    "level": "Mumbai",
+    "config": "config file13",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-11T20:50:59",
+    "status": "invalid"
+  },
+  {
+    "id": "config_zgqzrxnvyymu",
+    "level": "Global",
+    "config": "config file14",
+    "author": "Jim Doe",
+    "description": "default_for_michelle",
+    "created_at": "2022-Aug-15T09:04:37",
+    "status": "invalid"
+  },
+  {
+    "id": "config_bdfuevslslua",
+    "level": "Mumbai",
+    "config": "config file15",
+    "author": "Jim Doe",
+    "description": "Aug 8 22 default config - created after the DB cleanup",
+    "created_at": "2022-Aug-11T20:28:40",
+    "status": "valid"
+  },
+  {
+    "id": "config_soarpfgwjocr",
+    "level": "Mumbai",
+    "config": "config file16",
+    "author": "Jim Doe",
+    "description": "Aug 8 22 default config - created after the DB cleanup",
+    "created_at": "2022-Aug-15T09:13:57",
+    "status": "valid"
+  },
+  {
+    "id": "config_qgztczqplszz",
+    "level": "Global",
+    "config": "config file17",
+    "author": "Jim Doe",
+    "description": "config used to test SpinLaunch",
+    "created_at": "2022-Aug-08T20:09:36",
+    "status": "invalid"
+  }
+]

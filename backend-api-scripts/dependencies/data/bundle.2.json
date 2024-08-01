@@ -1,0 +1,7 @@
+{
+	"name": "bundle_name2",
+	"packages": [		
+		{ "name": "sphinx", "version": "4.5.0" }
+
+	]
+}

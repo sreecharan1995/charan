@@ -1,0 +1,22 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: sourcing-config
+  envs:  
+  - config/sourcing-config.env
+secretGenerator:
+- name: sourcing-config-secrets
+  envs:  
+  - config/sourcing-config-secrets.env  
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=sourcing-service"             

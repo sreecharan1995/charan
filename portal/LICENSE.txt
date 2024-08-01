@@ -1,0 +1,10 @@
+=======
+License
+=======
+
+Copyright (C) 2022 Spin VFX.
+All rights reserved.
+
+This file contains confidential and proprietary source code, belonging to
+Spin VFX. Its contents may not be disclosed to third parties,
+copied or duplicated in any form, in whole or in part, without prior permission.

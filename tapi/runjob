@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# entry point for running a tool on rez env
+# this is the default entry point for the "tapi" image which runs 
+# as part of a pod spawned by the scheduler exec as a k8 job
+
+# purpose:
+# set up a proper rez env based on the profile configuration
+# which is fetched from de dependency service
+
+#####################################################################
+
+# receive args or use env vars:
+
+job_id="${1:-"${JOBCONF_JOB_ID}"}"
+job_name="${2:-"${JOBCONF_JOB_NAME:-"${JOBCONF_JOB_ID}"}"}"
+job_file="${3:-"${JOBCONF_JOB_FILE:-"${ESCH_JOBCONF_BASEDIR}/${JOB_CONF_ID}.json"}"}"
+
+# validate args:
+
+if ! test -n "$job_id"
+then
+	echo "ERROR: no job_id in arg 1 or env" 1>&2
+	exit 128
+fi
+
+if ! test -n "$job_name"
+then
+	echo "ERROR: no job_name in arg 2 or env or default failed" 1>&2
+	/root/push-job-event error "internal error: no job_name in arg 2 of entry point"
+	exit 128
+fi
+
+if ! test -n "$job_file"
+then
+	echo "ERROR: no job_file in arg 3 or env or default failed" 1>&2
+	/root/push-job-event error "internal error: no job_file in arg 3 of entry point"
+	exit 128
+fi
+
+# validate json file containing event, tool config, profile packages:
+
+if ! test -s "$job_file"
+then
+	echo "ERROR: file '$job_file': missing, unreadable or empty" 1>&2
+	/root/push-job-event error "internal error: job_file unreadable or missing: $job_file"
+	exit 128
+fi
+
+if test 0 -eq "$(jq . "$job_file" | wc -l)"
+then
+        echo "ERROR: file '$job_file': contains invalid json" 1>&2
+	/root/push-job-event error "internal error: job_file contains invalid json: $job_file"
+        exit 128
+fi
+
+echo "DEBUG: job_id: ${job_id}, job_name: ${job_name}, job_file: ${job_file}"
+
+# extract tool script to execute:
+
+tool_script="$(jq -r .tool_config.tool_to_run "$job_file")"
+
+if ! test -n "$tool_script"  # if empty
+then
+	echo "ERROR: failed detection of tool script to execute" 1>&2
+	/root/push-job-event error "internal error: no tool_script detected in json file: $job_file"
+	exit 128
+fi
+
+echo "DEBUG: tool_script: '$tool_script'"
+
+# if tool_script has an absolute path then check it exists:
+if ! test "$tool_script" = "${tool_script#/}"
+then
+	if ! test -f "$tool_script"
+	then
+		echo "ERROR: tool script is missing from the expected location: '$tool_script'" 1>&2
+		/root/push-job-event error "tool_script not found: $tool_script"
+		exit 128
+	fi
+
+	if ! test -x "$tool_script"
+	then
+		echo "ERROR: tool script is missing execute permissions: '$tool_script'" 1>&2
+		/root/push-job-event error "tool_script missing execute permissions: $tool_script"
+		exit 128
+	fi
+fi
+
+# create a working directory from where to run the rez-env + tool and chdir to it:
+
+workdir="workdir-$job_id"
+
+mkdir -p "$workdir" && cd "$workdir" || \
+{
+       	echo "ERROR: failed to change directory to: '$workdir'" 1>&2; 
+	/root/push-job-event error "internal error: unable to mkdir or chdir into working directory: $workdir"
+	exit 128; 
+}
+
+# extract packages from profile, in a format usable from rez-env:
+
+rez_package_list="$(jq -r ".profile_packages[]" "$job_file")"
+
+if ! test -n "$rez_package_list"
+then
+	echo "WARN: unable to extract the profile package list or no packages in list, adding python" 1>&2
+	/root/push-job-event error "warning: rez_package_list seems empty, self-adding python"
+	# add python to the list of packages when no package in list:
+	rez_package_list="python $rez_package_list" 
+fi
+
+echo "DEBUG: rez-env packages: $rez_package_list"
+
+# send event to signal the rez-env + tool started, with timestamp:
+#send_status_event "started"    '{ \"job_id\": \"'"$job_id"'\", \"started_at\": '"$(date '+%s%N')"' }'
+/root/push-job-event started 
+
+# use rez-env to setup an environment based on the previous package list, then
+# run the tool from inside the working directory (inside rez-env):
+# by convention pass as first arg the json filename containing all possible data required from the tool
+source /root/.bashrc # make sure PATH and any other required env is loaded
+
+echo "PATH is $PATH"
+
+type rez-env || { echo "ERROR: rez-env executable not found" 1>&2; exit 127; } # test whether if rez-env script is on PATH
+rez-env -c "/root/toolwrapper $tool_script $job_file" $rez_package_list
+ecode=$? # store exit code from rez-env + tool (wrapper)
+
+# echo "ERROR: unable to setup rez environment, check previous output" 1>&2
+
+# send event to signal the tool finished with timestamp and exit code:
+#send_status_event "finished"   '{ \"job_id\": \"'"$job_id"'\", \"finished_at\": '"$(date '+%s%N')"', \"exit_code\": '"$ecode"' }'
+/root/push-job-event finished "$ecode"
+
+# exit with 0 to mean the job is completed:
+# notice that the actual job may have failed but the job pod completed its function, so we signal the ok, so no new pods are created
+exit 0 

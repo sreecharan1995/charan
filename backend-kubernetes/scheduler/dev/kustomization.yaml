@@ -1,0 +1,7 @@
+bases:
+- ../../base/dev
+resources:
+- ../base
+namespace: dev
+generatorOptions:
+  disableNameSuffixHash: true  

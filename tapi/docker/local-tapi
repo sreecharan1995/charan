@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This is an utility script used during development only, in the local developer machine to
+# test the creation of the rez env by the tapi image
+# It used a local folder as a volume to store packages
+
+LOCAL_TAPI_PACKAGES_DIR="$(pwd)/local-tapi-packages"
+
+if test "$1" = "--clean"
+then
+	echo "Recreating '${LOCAL_TAPI_PACKAGES_DIR}' ..." 
+	sudo /bin/rm -rf "${LOCAL_TAPI_PACKAGES_DIR}"
+fi
+
+mkdir -p "${LOCAL_TAPI_PACKAGES_DIR}"
+
+test -d "${LOCAL_TAPI_PACKAGES_DIR}" && \
+	docker run --rm -ti \
+		--volume "${LOCAL_TAPI_PACKAGES_DIR}":/root/packages/:rw \
+	       	spinvfx/tapi /bin/bash

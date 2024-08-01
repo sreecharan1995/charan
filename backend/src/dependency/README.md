@@ -1,0 +1,4 @@
+# DynamoDB Tables
+
+- profiles
+- bundles

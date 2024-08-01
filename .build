@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# USAGE: ./build MATCHER TAG1 TAG2 ..
+# where MATCHER is one of "backend", "rezv"
+#   and TAG1, TAG2, etc.. is an opcional list of one or more tags to set to the built image
+#   if no tag is specified, the default is used
+
+source ../../env.source
+
+MATCHER="${1}" 
+TAG="${2}"
+
+if test -z "$MATCHER"
+then
+	echo "No image matcher specified as first arg" 1>&2
+	exit 1
+fi
+
+BUILD_DATETIME=$(TZ='America/Toronto' date +"%Y-%m-%d %T %Z")
+BUILD_LINK="https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/pipelines/results/${BITBUCKET_BUILD_NUMBER}"
+
+{
+grep -E '^\s*\w+\s+Docker' | \
+while read matcher docker_file default_tag docker_env_file test_policy garbage
+do
+	if test -z "${matcher}" || test -z "${docker_file}" || test -z "${default_tag}" || test -z "${docker_env_file}"
+	then
+		echo "FAILED to parse one of the build spec lines" 1>&2
+		continue
+	fi
+
+	if test "${test_policy}" != "stop" && test "${test_policy}" != "continue" && test "${test_policy}" != "skip" && test "${test_policy}" != "-"
+	then
+		echo "FAILED to parse one of the build spec lines. Unknown test policy '${test_policy}'" 1>&2
+		continue
+	fi
+
+	if test "$matcher" != "$MATCHER"
+	then
+		continue
+	fi
+
+	effective_tag="${TAG:-${default_tag}}"
+
+	echo
+	echo "### Matching '${matcher}' ##########################################################"
+	echo
+	echo "DOCKER BUILD IMAGE, tag '${effective_tag}'"
+	echo
+	
+	docker build -t "${effective_tag}" -f "${docker_file}" \
+		--build-arg BUILD_ID="${BITBUCKET_BUILD_NUMBER}" \
+		--build-arg BUILD_HASH="${BITBUCKET_COMMIT}" \
+		--build-arg BUILD_DATE="${BUILD_DATETIME}" \
+		--build-arg BUILD_LINK="${BUILD_LINK}" \
+		--build-arg BUILD_IMAGE="${effective_tag}" \
+		..
+
+	if test $? -ne 0
+	then
+		echo "FAILED to docker-build image" 1>&2
+		exit 1
+	fi
+
+	if test "${test_policy}" != "skip" && test "${test_policy}" != "-"
+	then
+
+	  echo
+	  echo  "DOCKER RUN IMAGE (TESTS), tag '${effective_tag}', pip test script is '${matcher}-tests'"
+	  echo
+
+	  export BUILD_ID="${BUILD_ID:-"L-$RANDOM"}" # make sure BUILD_ID has a unique-enough value
+
+	  docker run --env-file=<(cat "${docker_env_file}" | grep -E '^\s*\w+=' | while read l; do echo "$(eval echo "$l")"; done) "${effective_tag}" pipenv run "${matcher}-tests"
+
+	  t_exitcode=$?
+
+	  if test $t_exitcode -ne 0
+	  then
+		echo
+		echo "!!!! TEST COMMAND RETURNED NON ZERO EXIT CODE $t_exitcode" 1>&2
+		echo
+
+		echo
+		echo "TEST POLICY IS '${test_policy}'"
+		echo
+
+		if test "${test_policy}" != "continue"
+		then
+			exit 2
+		fi
+	  fi
+
+	else
+		echo
+		echo "TEST ARE DISABLED"
+		echo
+	fi
+
+	if test $? -eq 0 && test $# -gt 2
+	then
+		shift 
+		shift
+		for extra_tag in $*
+		do
+			docker tag "${effective_tag}" "${extra_tag}" && \
+				echo "---> Added tag '${extra_tag}' to image '${effective_tag}'"
+		done
+	fi
+	
+	echo
+	echo "IMAGE BUILT AND TAGGED"
+	exit 0
+
+done
+} <<EEOOFF
+
+#   MATCHER      DOCKERFILE           DEFAULT TAG                    ENV FILE FOR DOCKER RUN (TEST EXECUTION)     TEST POLICY
+
+    backend      Dockerfile.backend   spinvfx/backend-service        test.docker.env                              stop
+    rezv         Dockerfile.rezv      spinvfx/rezv-service           test.docker.env                              stop
+    tapi         Dockerfile.tapi      spinvfx/tapi           	     -                                            -
+
+EEOOFF

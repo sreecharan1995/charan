@@ -1,0 +1,3 @@
+# DynamoDB Tables
+
+- configs

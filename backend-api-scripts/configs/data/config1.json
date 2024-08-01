@@ -1,0 +1,23 @@
+{
+	"name": "a_config",
+	"description": "a simple config for testing",
+	"level": {
+		"site": "Mumbai"
+	},
+	"inherits": true,
+	"configuration": {
+		"a": 5,
+		"c": [1,2,3],
+		"b": "bbb",
+		"dx": {
+			"d_1": {
+				"a": [777,888,999],
+				"b": ["a","b","c"],
+				"cc": "text one"
+			},
+			"d_2": true,
+			"d_3": [true, true],
+			"d_4": 57463546.8933
+		}
+	}
+}

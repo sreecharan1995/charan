@@ -1,0 +1,16 @@
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: portal-config
+  envs:
+  - config/cfg_portal.env
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "kustomize=portal"    

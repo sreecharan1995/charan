@@ -1,0 +1,21 @@
+bases:
+- ../../base/prod
+resources:
+- ../base
+namespace: prod
+configMapGenerator:
+- name: level-config
+  envs:  
+  - config/lvl_config.env
+- name: level-sync-config
+  envs:  
+  - config/lvl_sync_config.env  
+generatorOptions:
+  disableNameSuffixHash: true   
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/0/values/0
+        value: prod      
+    target:
+      labelSelector: "module=levels-service-tree-sync"              

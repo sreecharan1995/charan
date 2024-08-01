@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# source the common (shared) build code in a parent directory:
+source ../../.build

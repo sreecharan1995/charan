@@ -1,0 +1,16 @@
+secretGenerator:
+- name: auth-config
+  envs:  
+  - config/auth_secrets.env
+- name: aws-dybamodb
+  envs:  
+  - config/aws_dynamodb_secrets.env
+- name: aws-eventbus
+  envs:
+  - config/aws_eventbus_secrets.env   
+configMapGenerator:
+- name: common-config
+  envs:
+  - config/common_config.env   
+generatorOptions:
+  disableNameSuffixHash: true  

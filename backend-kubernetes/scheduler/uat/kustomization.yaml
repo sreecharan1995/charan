@@ -1,0 +1,7 @@
+bases:
+- ../../base/uat
+resources:
+- ../base
+namespace: uat
+generatorOptions:
+  disableNameSuffixHash: true

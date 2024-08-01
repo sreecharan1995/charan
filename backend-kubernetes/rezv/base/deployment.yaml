@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rez-service
+  labels:
+    app: spin-msr
+    module: rez-service
+    env: dev
+    kustomize: rez-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: rez-service
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: rez-service
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev    
+      volumes:
+      - name: spin-rez
+        persistentVolumeClaim:
+          claimName: spin-rez   
+      containers:
+      - image: image_name
+        name: rez-service
+        imagePullPolicy: Always
+        command: ["pipenv", "run", "rezv-server"]
+        envFrom:
+          - configMapRef:
+              name: common-config        
+          - configMapRef:
+              name: rez-service-config
+          - secretRef:
+              name: aws-dybamodb
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: auth-config
+          - secretRef:
+              name: shotgrid
+        ports:
+          - containerPort: 8000
+            name: http
+        volumeMounts:
+          - name: spin-rez
+            mountPath: /mount/spin-rez
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: rez-service
+    env: dev
+  name: rez-service
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: rez-service
+    env: dev
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---

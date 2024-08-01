@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sourcing-service
+  labels:
+    app: spin-msr
+    module: sourcing-service
+    env: dev
+    kustomize: sourcing-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spin-msr
+      module: sourcing-service
+      env: dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spin-msr
+        module: sourcing-service
+        env: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+               - key: Environment
+                 operator: In
+                 values:
+                 - dev   
+      volumes:
+      - name: permission-matrix
+        persistentVolumeClaim:
+          claimName: permission-matrix                    
+      containers:
+      - image: image_name
+        name: sourcing-service
+        imagePullPolicy: Always
+        command: ["pipenv", "run", "sourcing-server"]
+        envFrom:
+          - secretRef:
+              name: aws-eventbus
+          - secretRef:
+              name: sourcing-config-secrets   
+          - secretRef:
+              name: auth-config                                       
+          - configMapRef:
+              name: sourcing-config
+          - configMapRef:
+              name: common-config 
+        ports:
+          - containerPort: 8000
+            name: http
+        volumeMounts:
+          - name: permission-matrix
+            mountPath: /mount/permission-matrix
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: spin-msr
+    module: sourcing-service
+    env: dev
+  name: sourcing-service
+spec:
+  type: ClusterIP
+  selector:
+    app: spin-msr
+    module: sourcing-service
+    env: dev
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+

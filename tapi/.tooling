@@ -1,0 +1,31 @@
+
+# utility function to conveniently execute and test tools locally during development
+
+function exec_tool() {
+
+	toolname="$1"
+	toolname="${toolname##./}"
+	toolname="${toolname##t_}"
+	toolname="${toolname%%.sh}"
+	toolsdir="tools"
+	jsonfile="${2:-"json/$toolname.json"}"
+	toolfile="src-vol/$toolname.py"
+
+	test -e "$jsonfile" || { echo "json file not found: $jsonfile" 1>&2; exit 1; }
+	test -e "$toolfile" || { echo "tool file not found: $toolfile" 1>&2; exit 1; }
+	
+	shift 
+	shift
+
+	if test $# -gt 0
+	then
+		echo "bad usage: too many args"
+		exit -1
+	fi
+	
+
+	echo "using '$toolsdir/$jsonfile' as stdin"
+
+	cd .. && \
+		cat "$toolsdir/$jsonfile" | pipenv run python "$toolsdir/$toolfile"
+}

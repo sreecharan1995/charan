@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portal-config
+data:
+  API_BASEURL_LEVELS_SERVICE: 'https://levels.dev.spinvfx.com'
+  API_BASEURL_DEPENDENCY_SERVICE: 'https://dependencies.dev.spinvfx.com'
+  API_BASEURL_REZ_SERVICE: 'https://rez-service.dev.spinvfx.com'
+  API_BASEURL_CONFIGURATION_SERVICE: 'https://configs.dev.spinvfx.com'

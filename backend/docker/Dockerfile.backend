@@ -1,0 +1,40 @@
+
+# This Dockerfile defines the image used by all microservices processes except "rezv service". 
+# A different entry point is used depending on wich service to run.
+
+FROM python:3.7.12
+
+RUN pip install pipenv
+
+ARG PROJECT_DIR=/opt/spinvfx
+
+RUN mkdir -p ${PROJECT_DIR}
+ENV PROJECT_DIR ${PROJECT_DIR}
+
+WORKDIR ${PROJECT_DIR}
+
+COPY . "${PROJECT_DIR}"/
+
+RUN find src/ -name "*.pyc" -delete
+RUN find src/ -name "__pycache__" -delete
+
+RUN pipenv install --dev --deploy
+
+ARG BUILD_ID
+ARG BUILD_HASH
+ARG BUILD_DATE
+ARG BUILD_LINK
+ARG BUILD_IMAGE
+
+RUN /bin/rm -rf "${PROJECT_DIR}/.env" "${PROJECT_DIR}/docker/"
+
+RUN echo 'PYTHONPATH=src' 	      >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_ID="'$BUILD_ID'"'     >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_HASH="'$BUILD_HASH'"' >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_DATE="'$BUILD_DATE'"' >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_LINK="'$BUILD_LINK'"' >>"${PROJECT_DIR}/.env" 
+RUN echo 'BUILD_IMAGE="'$BUILD_IMAGE'"' >>"${PROJECT_DIR}/.env"
+
+ENV PYTHONPATH=src
+
+RUN pipenv run docs || exit 0

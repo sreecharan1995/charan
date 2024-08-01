@@ -1,0 +1,9 @@
+<package_configuration version="1">
+   
+   <profile name="missing_packages">
+		<package name="maya" version="2020.4"/>
+		<package name="katana" version="3.6v1"/>
+		<package name="nuke" version="11.3v4"/>
+  </profile>
+
+</package_configuration>

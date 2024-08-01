@@ -1,0 +1,12 @@
+resources:
+- deployment.yaml
+secretGenerator:
+- name: shotgrid
+  envs:
+  - config/shotgrid_secrets.env
+generatorOptions:
+  disableNameSuffixHash: true
+images:
+- name: image_name
+  newName: ${DOCKER_REGISTRY}/rez-service
+  newTag: $IMAGE_TAG

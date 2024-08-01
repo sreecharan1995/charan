@@ -1,0 +1,596 @@
+[
+  {
+    "id": "83204419",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "0e4eb5bb",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "09e8835d",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "109a43e3",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "6b43216b",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "17e9130b",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "d894ebe2",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "7a24a0f8",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "49ff9b72",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "c2f2d206",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "dd36f2c9",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "732eeb2c",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "2131731f",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "38b5a995",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "99bef166",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "b40e29b8",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "c69a8960",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "c6be3ba5",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "ea9de3b6",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "ad2a44e1",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "4ae5cf5a",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "c3697dfc",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "26abaf75",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "4dcb3666",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "655d6559",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "0b586c6b",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "1c419545",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "d1a1b405",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "d710f2c2",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "91bb784a",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "9fd8d591",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "367c034c",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "f2a62c21",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "db715e94",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "a0bca0da",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "769e4d32",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "9e397c20",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "e3fb5eed",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "58c7eead",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "b702acda",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "ee34c3d3",
+    "name": "maya",
+    "description": "Default Maya version across the board",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "45b1a6e3", "name": "exr", "versions": ["1.0.15", "1.2.8", "1.3.0"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "5e2c0d79", "name": "scandir", "versions": ["0.18"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "525bb669", "name": "spin_qt", "versions": ["4.15.18"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "b70ed5f5",
+    "name": "katana",
+    "description": "Default version used by artists",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "61df8c18",
+    "name": "houdini",
+    "description": "Houdini DEV",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "78c986ff",
+    "name": "maya2017",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "0ae7e01d",
+    "name": "maya_atoms",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "0b0c828c",
+    "name": "houdini_18.5.351",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "c090e9bd",
+    "name": "tractor",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  },
+  {
+    "id": "521f4420",
+    "name": "redshift",
+    "description": "Lorem ipsum dolor sit amet, consectetur",
+    "status": "valid",
+    "packages": [
+      { "id": "977875da", "name": "maya", "versions": ["2020.1", "2021.18", "2022.4"] },
+      { "id": "ea1b702e", "name": "pyilmbase", "versions": ["2.2.1", "2.2.11", "2.3.8"] },
+      { "id": "65bddce8", "name": "ocio", "versions": ["3.31.4"] },
+      { "id": "78d23cc7", "name": "numpy", "versions": ["20.08.spin.1"] }
+    ]
+  }
+]

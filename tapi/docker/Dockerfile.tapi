@@ -1,0 +1,67 @@
+# This Dockerfile defines how to build the image used to run the tools that must run inside of a rez env
+# This image is used in the pods that spawns the scheduler exec as a k8 job in response to a job request
+# previously created by the scheduler fast api app in response to an event received from the internal event bridge
+
+FROM centos:7.9.2009
+
+RUN yum update -y && yum groupinstall -y "Development Tools" && yum install -y zlib-devel openssl-devel libffi-devel which
+
+ENV REZ_VER 2.103.4
+ENV REZ_HOME /opt/rez
+ENV REZ_PACKAGES_PATH "${REZ_PACKAGES_PATH:-/root/packages}"
+ENV REZ_CONFIG_FILE ${REZ_CONFIG_FILE:-/root/rezconfig.py}
+
+ARG BUILD_ID
+ARG BUILD_HASH
+ARG BUILD_DATE
+ARG BUILD_LINK
+ARG BUILD_IMAGE
+
+# rez installation:
+
+RUN mkdir -p "${REZ_HOME}"
+WORKDIR "${REZ_HOME}"
+RUN curl -L https://github.com/AcademySoftwareFoundation/rez/archive/refs/tags/${REZ_VER}.tar.gz --output ${REZ_HOME}/rez.tar.gz
+RUN tar -vxf rez.tar.gz -C .
+RUN python rez-${REZ_VER}/install.py
+RUN rm -f rez.tar.gz
+
+RUN echo 'test -z "${REZ_SHELL_INIT_TIMESTAMP}"'" && export PATH=$PATH:${REZ_HOME}/bin/rez/:/usr/local/bin/" >>~/.bashrc
+RUN echo "source ${REZ_HOME}/completion/complete.sh" >>~/.bashrc
+
+# rez config:
+
+COPY rezconfig.py /root/rezconfig.py
+
+WORKDIR /root
+
+# image build data:
+
+RUN echo "BUILD_ID='$BUILD_ID'"     >>"/root/.env" 
+RUN echo "BUILD_HASH='$BUILD_HASH'" >>"/root/.env" 
+RUN echo "BUILD_DATE='$BUILD_DATE'" >>"/root/.env" 
+RUN echo "BUILD_LINK='$BUILD_LINK'" >>"/root/.env" 
+RUN echo "BUILD_IMAGE='$BUILD_IMAGE'" >>"/root/.env"
+
+# download and install jq:
+
+RUN curl -L -o jq-linux64 -vv https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 \
+	&& chmod 755 jq-linux64 \
+	&& /bin/mv jq-linux64 /usr/local/bin/jq
+
+# download and install awscli
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+	&& unzip awscliv2.zip \
+	&& ./aws/install
+
+COPY push-job-event /root/push-job-event
+RUN chmod +x /root/push-job-event
+
+COPY toolwrapper /root/toolwrapper
+RUN chmod +x /root/toolwrapper
+
+COPY runjob /root/runjob
+RUN chmod +x /root/runjob
+
+CMD /root/runjob

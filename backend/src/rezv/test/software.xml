@@ -1,0 +1,7 @@
+<package_configuration version="1">
+    <profile name="default">
+        <bundle name="import_test">
+            <package name="anyio" version="3.5.0"/>
+        </bundle>
+    </profile>
+</package_configuration>
